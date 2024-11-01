@@ -1,0 +1,28 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "1991:1991"
+    volumes:
+      - ./backend:/app
+      - $HOME/.deno:/deno-dir
+    environment:
+      - ENV=development
+    env_file:
+      - .env
+    restart: unless-stopped
+    command:
+      [
+        "run",
+        "--watch",
+        "--allow-net",
+        "--allow-read",
+        "--allow-env",
+        "--allow-sys",
+        "main.ts",
+      ]
+
+volumes:
+  deno-cache:
