@@ -28,14 +28,9 @@ passport.deserializeUser((user: any, done: any) => {
 
 // Main auth endpoint
 function GET_auth(_req: express.Request, res: express.Response) {
-    res.send(`
-        <html>
-            <body>
-                <h1>Authentication</h1>
-                <a href="/auth/google">Login with Google</a>
-            </body>
-        </html>
-    `);
+    passport.authenticate("google", {
+        scope: ["profile", "email"],
+    });
 }
 
 // Callback handler

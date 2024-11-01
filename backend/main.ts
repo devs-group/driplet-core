@@ -17,10 +17,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Register all API endpoints
-app.get("/", function (req: express.Request, res: express.Response) {
-  res.send(200);
-});
-
 app = routes(app);
 
 app.listen(config.port);
