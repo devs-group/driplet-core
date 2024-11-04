@@ -1,4 +1,4 @@
-const config = {
+export const config = {
     port: Deno.env.get("PORT") || 1991,
     google: {
         clientID: Deno.env.get("GOOGLE_CLIENT_ID") || "",
@@ -8,6 +8,11 @@ const config = {
     session: {
         secret: Deno.env.get("SESSION_SECRET") || "your-secret-key",
     },
+    postgres: {
+        user: Deno.env.get("POSTGRES_USER") || "postgres",
+        password: Deno.env.get("POSTGRES_PASSWORD") || "postgres",
+        db: Deno.env.get("POSTGRES_DB") || "postgres",
+        host: Deno.env.get("POSTGRES_HOST") || "database",
+        port: parseInt(Deno.env.get("POSTGRES_PORT") || "5432"),
+    },
 };
-
-export { config };

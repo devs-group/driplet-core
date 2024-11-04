@@ -2,8 +2,18 @@ import { config } from "./config.ts";
 import { express, expressSession, passport } from "./deps.ts";
 import { l } from "./logger.ts";
 import { routes } from "./routes.ts";
+import { configureAuth } from "./auth/auth-config.ts";
+import { createDBMiddleware } from "./db/middleware.ts";
+import { DB } from "./db/index.ts";
 
-let app = express();
+const app = express();
+
+// Initialize db connection and inject into request
+const db = await DB();
+app.use(createDBMiddleware(db));
+
+// Initialize passport oauth configuration
+configureAuth(db);
 
 // Session middleware
 app.use(expressSession({
@@ -17,7 +27,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // Register all API endpoints
-app = routes(app);
+routes(app);
 
 app.listen(config.port);
 l.info(`Server listening on port ${config.port}`);

@@ -2,8 +2,6 @@ FROM denoland/deno:2.0.4
 
 WORKDIR /app
 
-USER deno
-
 COPY deps.ts .
 RUN deno install --entrypoint deps.ts
 

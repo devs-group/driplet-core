@@ -1,0 +1,6 @@
+{
+  "tasks": {
+    "create-migration": "deno run -A npm:node-pg-migrate create -j sql",
+    "migrate": "deno run -A npm:node-pg-migrate up -j sql"
+  }
+}

@@ -10,6 +10,7 @@ services:
       - $HOME/.deno:/deno-dir
     environment:
       - ENV=development
+      - DATABASE_URL=postgres://postgres:postgres@database:5432/postgres
     env_file:
       - .env
     restart: unless-stopped
@@ -23,6 +24,27 @@ services:
         "--allow-sys",
         "main.ts",
       ]
+    depends_on:
+      database:
+        condition: service_healthy
+
+  database:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=postgres
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
 
 volumes:
   deno-cache:
+  postgres_data:

@@ -1,7 +1,5 @@
-import { express } from "../deps.ts";
+import { express, STATUS_CODE } from "../deps.ts";
 
-function GET_health(_: express.Request, res: express.Response) {
-    res.send(200, { "message": "ok" });
+export function GET_health(_: express.Request, res: express.Response) {
+    res.status(STATUS_CODE.OK).send({ "message": "healthy" });
 }
-
-export { GET_health };
