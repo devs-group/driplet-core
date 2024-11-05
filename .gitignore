@@ -3,6 +3,3 @@ backend/credentials/*
 
 # Env files
 .env*
-
-# VSCode
-.vscode/*

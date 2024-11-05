@@ -24,6 +24,7 @@ export async function POST_collect(req: express.Request, res: express.Response) 
   } catch (error) {
     console.error(`Error publishing message: ${error}`);
     res.status(STATUS_CODE.InternalServerError).send({ message: "Error publishing message" });
+    return;
   }
 
   res.status(STATUS_CODE.OK).send({ message: "collected" });
