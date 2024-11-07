@@ -8,7 +8,8 @@ import {
 } from "./handlers/auth.ts";
 import { GET_health } from "./handlers/health.ts";
 import { POST_collect } from "./handlers/collect.ts";
-import bodyParser from "npm:body-parser@1.20.2";
+import { requireAuth } from "./middlewares/auth.ts";
+
 
 export function routes(app: express.Application) {
     app.get("/health", GET_health);
@@ -17,5 +18,5 @@ export function routes(app: express.Application) {
     app.get("/auth/success", GET_authSuccess);
     app.get("/auth/failure", GET_authFailure);
     app.get("/auth/logout", GET_logout);
-    app.post("/collect/client-event", bodyParser.json(), POST_collect);
+    app.post("/collect/client-event", requireAuth, POST_collect);
 }

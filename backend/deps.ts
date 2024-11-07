@@ -13,6 +13,8 @@ import { STATUS_CODE } from "https://deno.land/std@0.217.0/http/status.ts";
 import pg from "npm:pg";
 // @deno-types="npm:@types/node-pg-migrate"
 import npgm from "npm:node-pg-migrate";
+// @deno-types="npm:@types/body-parser"
+import bodyParser from "npm:body-parser@1.20.2";
 
 export {
     express,
@@ -23,4 +25,5 @@ export {
     pg,
     pino,
     STATUS_CODE,
+    bodyParser,
 };
