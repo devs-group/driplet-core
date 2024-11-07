@@ -1,0 +1,5 @@
+# Google credentials
+backend/credentials/*
+
+# Env files
+.env*

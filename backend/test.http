@@ -1,0 +1,77 @@
+### Health check
+GET http://localhost:1991/health
+
+### Basic test request to collect client event
+POST http://localhost:1991/collect/client-event
+Content-Type: application/json
+
+{
+  "event": {
+      "version": 2,
+      "tracking_id": "G-WH2QY8WWF5",
+      "google_tag_manager_id": "45je4au0v873759632z8897536842za200zb897536842",
+      "page_id": 1730812194181,
+      "google_client_id": "G111",
+      "google_client_detail": "13r3r3l3l5l1",
+      "non_personalized_ads": 0,
+      "display_market_area": 0,
+      "tag_expiration": "101823848~101878899~101878944~101925629",
+      "client_id": "240996544.1721719231",
+      "user_language": "en-us",
+      "screen_resolution": "3840x1600",
+      "navigation_gap": 1,
+      "is_repeat_interaction": 1,
+      "user_agent_architecture": "arm",
+      "user_agent_browser_bits": 64,
+      "user_agent_full_version_list": "Chromium;130.0.6723.70|Google Chrome;130.0.6723.70|Not_A_Brand;99.0.0.0",
+      "user_agent_mobile_browser": 0,
+      "user_agent_mobile": "",
+      "user_agent_platform": "macOS",
+      "user_agent_platform_version": "14.5.0",
+      "user_agent_wearable": 0,
+      "ad_rendering_enabled": 1,
+      "publisher_ad_experiments_enabled": 1,
+      "flash_rendering_mode": 0,
+      "persistent_cookie_download": "noapi",
+      "event_unique_id": "EA",
+      "session_number": 4,
+      "document_location": "https://cloud.google-b197145817.com/pubsub/docs/monitoring/",
+      "document_referrer": "https://cloud.google.com/pubsub/docs/bigquery",
+      "session_id": 1730807787,
+      "session_count": 262,
+      "segment": 1,
+      "document_title": "Monitor Pub/Sub in Cloud Monitoring | Pub/Sub Documentation | Google Cloud",
+      "event_name": "page_view",
+      "context": 1,
+      "extra_params": {
+        "container_id_and_version": "GTM-M8NRS5J:86",
+        "is_queued": false,
+        "event_number": 3,
+        "queue_batch_number": 4,
+        "queue_batch_hit_number": 0,
+        "country": "CH",
+        "utm_campaign_source": "localhost",
+        "utm_medium": "referral",
+        "utm_campaign_name": "(referral)",
+        "utm_content": "/",
+        "is_internal_user": false,
+        "language_machine_translated": false,
+        "language_requested": "en",
+        "language_served": "en",
+        "page_type": "article",
+        "is_signed_in": true,
+        "page_client_height": 1371,
+        "page_client_width": 541,
+        "page_hosting_platform": "devsite",
+        "page_original_url": "https://cloud.google.com/pubsub/docs/monitoring#maintain_a_healthy_subscription",
+        "non_interaction": false,
+        "is_free_trial_eligible": false,
+        "has_campaign_ref_param": false,
+        "is_eea_user": false
+      },
+      "engagement_time": 2,
+      "total_frequent_display": 2764
+    }
+}
+
+###

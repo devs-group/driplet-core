@@ -11,6 +11,7 @@ services:
     environment:
       - ENV=development
       - DATABASE_URL=postgres://postgres:postgres@database:5432/postgres
+      - GOOGLE_APPLICATION_CREDENTIALS=/app/credentials/service-account-key.json
     env_file:
       - .env
     restart: unless-stopped
