@@ -15,15 +15,18 @@ import pg from "npm:pg";
 import npgm from "npm:node-pg-migrate";
 // @deno-types="npm:@types/body-parser"
 import bodyParser from "npm:body-parser@1.20.2";
+// @deno-types="npm:@types/connect-pg-simple"
+import pgSession from "npm:connect-pg-simple";
 
 export {
+    bodyParser,
     express,
     expressSession,
     GoogleStrategy,
     npgm,
     passport,
     pg,
+    pgSession,
     pino,
     STATUS_CODE,
-    bodyParser,
 };

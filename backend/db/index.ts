@@ -15,6 +15,7 @@ export interface Queries {
         email: string,
     ) => Promise<User | null>;
     saveUser: (email: string, oauthId: string) => Promise<User | null>;
+    getPool: () => pg.Pool;
 }
 
 export async function DB(): Promise<Queries> {
@@ -27,6 +28,10 @@ export async function DB(): Promise<Queries> {
         database: config.postgres.db,
     });
     const client = await pool.connect();
+
+    function getPool() {
+        return pool;
+    }
 
     async function getUserByID(id: string): Promise<User | null> {
         try {
@@ -81,5 +86,6 @@ export async function DB(): Promise<Queries> {
         getUserByID,
         getUserByOAuthIdAndEmail,
         saveUser,
+        getPool,
     };
 }

@@ -3,14 +3,19 @@ import { PubSub } from "npm:@google-cloud/pubsub@4.1.0";
 import { config } from "../config.ts";
 import { Buffer } from "node:buffer";
 import { type } from "node:os";
-import { l } from "../logger.ts" 
+import { l } from "../logger.ts";
 
 const pubsub = new PubSub({
   projectId: config.google.projectId,
 });
-const clientEventTopic = await pubsub.topic(config.google.pubsubTopicClientEvents);
+const clientEventTopic = await pubsub.topic(
+  config.google.pubsubTopicClientEvents,
+);
 
-export async function POST_collect(req: express.Request, res: express.Response) {
+export async function POST_collect(
+  req: express.Request,
+  res: express.Response,
+) {
   const { event } = req.body;
 
   if (!event) {
@@ -30,7 +35,9 @@ export async function POST_collect(req: express.Request, res: express.Response) 
     });
   } catch (error) {
     l.error(`Error publishing message: ${error}`);
-    res.status(STATUS_CODE.InternalServerError).send({ message: "Error publishing message" });
+    res.status(STATUS_CODE.InternalServerError).send({
+      message: "Error publishing message",
+    });
     return;
   }
 
