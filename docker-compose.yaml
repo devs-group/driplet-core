@@ -12,6 +12,7 @@ services:
       - ENV=development
       - DATABASE_URL=postgres://postgres:postgres@database:5432/postgres
       - GOOGLE_APPLICATION_CREDENTIALS=/app/credentials/service-account-key.json
+      - PUBSUB_EMULATOR_HOST=pubsub:8085
     env_file:
       - .env
     restart: unless-stopped
@@ -28,6 +29,8 @@ services:
     depends_on:
       database:
         condition: service_healthy
+      pubsub:
+        condition: service_started
 
   database:
     image: postgres:16-alpine
@@ -35,16 +38,35 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=postgres
+    env_file:
+      - .env
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U postgres"]
       interval: 5s
       timeout: 5s
       retries: 5
     restart: unless-stopped
+
+  pubsub:
+    image: gcr.io/google.com/cloudsdktool/google-cloud-cli:emulators
+    ports:
+      - "8085:8085"
+    command: [
+      "gcloud",
+      "beta",
+      "emulators",
+      "pubsub",
+      "start",
+      "--host-port=0.0.0.0:8085",
+      "--project=local-project"
+    ]
+    env_file:
+      - .env
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "8085"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
 volumes:
   deno-cache:

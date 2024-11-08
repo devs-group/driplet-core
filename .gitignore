@@ -2,4 +2,4 @@
 backend/credentials/*
 
 # Env files
-.env*
+.env

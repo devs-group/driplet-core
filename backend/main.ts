@@ -1,5 +1,5 @@
 import { config } from "./config.ts";
-import { express, expressSession, passport } from "./deps.ts";
+import { express, expressSession, passport, bodyParser } from "./deps.ts";
 import { l } from "./logger.ts";
 import { routes } from "./routes.ts";
 import { configureAuth } from "./auth/auth-config.ts";
@@ -7,6 +7,8 @@ import { createDBMiddleware } from "./db/middleware.ts";
 import { DB } from "./db/index.ts";
 
 const app = express();
+
+app.use(bodyParser.json())
 
 // Initialize db connection and inject into request
 const db = await DB();
@@ -25,6 +27,9 @@ app.use(expressSession({
 // Initialize passport and restore authentication state from session
 app.use(passport.initialize());
 app.use(passport.session());
+
+// Serve static folder
+app.use(express.static('static'));
 
 // Register all API endpoints
 routes(app);

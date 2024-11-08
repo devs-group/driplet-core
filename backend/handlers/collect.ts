@@ -3,6 +3,7 @@ import { PubSub } from "npm:@google-cloud/pubsub@4.1.0";
 import { config } from "../config.ts";
 import { Buffer } from "node:buffer";
 import { type } from "node:os";
+import { l } from "../logger.ts" 
 
 const pubsub = new PubSub({
   projectId: config.google.projectId,
@@ -17,12 +18,18 @@ export async function POST_collect(req: express.Request, res: express.Response) 
     return;
   }
 
+  const messageData = {
+    event,
+    user_id: user.id,
+    timestamp: new Date().toISOString(),
+  };
+
   try {
     await clientEventTopic.publishMessage({
-      data: Buffer.from(type.toString(event)),
+      data: Buffer.from(type.toString(messageData)),
     });
   } catch (error) {
-    console.error(`Error publishing message: ${error}`);
+    l.error(`Error publishing message: ${error}`);
     res.status(STATUS_CODE.InternalServerError).send({ message: "Error publishing message" });
     return;
   }
