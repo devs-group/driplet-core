@@ -5,6 +5,7 @@ import {
     GET_authFailure,
     GET_authSuccess,
     GET_logout,
+    GET_getUser,
 } from "./handlers/auth.ts";
 import { GET_health } from "./handlers/health.ts";
 import { POST_collect } from "./handlers/collect.ts";
@@ -18,5 +19,6 @@ export function routes(app: express.Application) {
     app.get("/auth/success", GET_authSuccess);
     app.get("/auth/failure", GET_authFailure);
     app.get("/auth/logout", GET_logout);
+    app.get("/auth/user", requireAuth, GET_getUser)
     app.post("/collect/client-event", requireAuth, POST_collect);
 }

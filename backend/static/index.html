@@ -12,10 +12,9 @@
         // Check login status
         async function checkLoginStatus() {
             try {
-                const response = await fetch('/collect/client-event', {
-                    method: 'POST',
+                const response = await fetch('/auth/user', {
+                    method: 'GET',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ event: { type: 'TEST' } })
                 });
                 
                 document.getElementById('loginStatus').textContent = 
@@ -52,7 +51,6 @@
                 }
                 
                 showResult(result);
-                checkLoginStatus();
             } catch (error) {
                 showResult(error.message, true);
             }
