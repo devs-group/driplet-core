@@ -1,13 +1,15 @@
 # 🌊 Driplet Core
 
-A lightweight backend service for authentication and data streaming management built with DENO 🦕.
+A lightweight backend service for authentication and data streaming management
+built with DENO 🦕.
 
 ## 🌟 Overview
 
-Driplet Core serves as the authentication backbone and data ingestion service for the Driplet ecosystem. The service currently handles:
+Driplet Core serves as the authentication backbone and data ingestion service
+for the Driplet ecosystem. The service currently handles:
 
 - User authentication and authorization
-- Data insertion into PubSub topics (Work in Progress) `@Timo` 🏗️
+- Data insertion into PubSub topic
 
 ## 🚀 Getting Started
 
@@ -18,7 +20,8 @@ Driplet Core serves as the authentication backbone and data ingestion service fo
 
 ### Running the Service
 
-You can start the service using either Docker Compose directly or the prepared Makefile commands.
+You can start the service using either Docker Compose directly or the prepared
+Makefile commands.
 
 #### Using Makefile
 
@@ -38,6 +41,12 @@ Run database migrations:
 
 ```bash
 make migrate
+```
+
+Create a new database migration file
+
+```bash
+make migration name=<migration_name>
 ```
 
 View backend logs:

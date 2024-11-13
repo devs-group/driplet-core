@@ -2,6 +2,8 @@
   "version": "4",
   "specifiers": {
     "npm:@google-cloud/pubsub@4.1.0": "4.1.0",
+    "npm:@types/body-parser@*": "1.19.5",
+    "npm:@types/connect-pg-simple@*": "7.0.3",
     "npm:@types/express-session@*": "1.18.0",
     "npm:@types/express@*": "5.0.0",
     "npm:@types/node-pg-migrate@*": "2.3.1",
@@ -11,6 +13,7 @@
     "npm:@types/pg@*": "8.11.10",
     "npm:@types/pino@*": "7.0.5",
     "npm:body-parser@1.20.2": "1.20.2",
+    "npm:connect-pg-simple@*": "10.0.0",
     "npm:drizzle-kit@*": "0.27.1_esbuild@0.19.12",
     "npm:drizzle-kit@0.27.1": "0.27.1_esbuild@0.19.12",
     "npm:drizzle-orm@*": "0.36.0_postgres@3.4.5",
@@ -296,6 +299,14 @@
     "@types/caseless@0.12.5": {
       "integrity": "sha512-hWtVTC2q7hc7xZ/RLbxapMvDMgUnDvKvMOpKal4DrMyfGBUfB1oKaZlIRr6mJL+If3bAP6sV/QneGzF6tJjZDg=="
     },
+    "@types/connect-pg-simple@7.0.3": {
+      "integrity": "sha512-NGCy9WBlW2bw+J/QlLnFZ9WjoGs6tMo3LAut6mY4kK+XHzue//lpNVpAvYRpIwM969vBRAM2Re0izUvV6kt+NA==",
+      "dependencies": [
+        "@types/express",
+        "@types/express-session",
+        "@types/pg"
+      ]
+    },
     "@types/connect@3.4.38": {
       "integrity": "sha512-K6uROf1LD88uDQqJCktA4yzL1YYAK6NgfsI0v/mTgyPKWsX1CnJ0XPSDhViejru1GcRkLWb8RlzFYJRqGUbaug==",
       "dependencies": [
@@ -553,6 +564,12 @@
       "integrity": "sha512-FQN4MRfuJeHf7cBbBMJFXhKSDq+2kAArBlmRBvcvFE5BB1HZKXtSFASDhdlz9zOYwxh8lDdnvmMOe/+5cdoEdg==",
       "dependencies": [
         "delayed-stream"
+      ]
+    },
+    "connect-pg-simple@10.0.0": {
+      "integrity": "sha512-pBGVazlqiMrackzCr0eKhn4LO5trJXsOX0nQoey9wCOayh80MYtThCbq8eoLsjpiWgiok/h+1/uti9/2/Una8A==",
+      "dependencies": [
+        "pg"
       ]
     },
     "content-disposition@0.5.4": {
