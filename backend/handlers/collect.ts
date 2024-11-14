@@ -1,5 +1,5 @@
 import { express, STATUS_CODE } from "../deps.ts";
-import { publishMessage, type EventMessage } from "../pubsub/pubsub.ts";
+import { type EventMessage, publishMessage } from "../pubsub/pubsub.ts";
 import { PubSub } from "npm:@google-cloud/pubsub@4.1.0";
 import { config } from "../config.ts";
 import { Buffer } from "node:buffer";
@@ -19,16 +19,16 @@ export async function POST_collect(
 ) {
   const { event } = req.body;
 
-  if (!event || typeof event !== 'object') {
-    res.status(STATUS_CODE.BadRequest).send({ 
-      message: "Event is required and must be an object" 
+  if (!event || typeof event !== "object") {
+    res.status(STATUS_CODE.BadRequest).send({
+      message: "Event is required and must be an object",
     });
     return;
   }
 
   if (!req.user?.id) {
-    res.status(STATUS_CODE.Unauthorized).send({ 
-      message: "User must be authenticated" 
+    res.status(STATUS_CODE.Unauthorized).send({
+      message: "User must be authenticated",
     });
     return;
   }
@@ -41,12 +41,13 @@ export async function POST_collect(
 
   try {
     const messageId = await publishMessage(messageData);
-    res.status(STATUS_CODE.OK).send({ 
+    res.status(STATUS_CODE.OK).send({
       message: "Event collected successfully",
       messageId,
     });
+    return;
   } catch (error) {
-    l.error('Failed to publish message:', {
+    l.error("Failed to publish message:", {
       error: error.message,
       event: messageData,
     });
@@ -55,9 +56,4 @@ export async function POST_collect(
     });
     return;
   }
-
-  res.status(STATUS_CODE.InternalServerError).send({ 
-    message: "Failed to collect event",
-    error: error.message,
-  });
 }

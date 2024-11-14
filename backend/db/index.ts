@@ -21,11 +21,7 @@ export interface Queries {
 export async function DB(): Promise<Queries> {
     const { Pool } = pg;
     const pool = new Pool({
-        user: config.postgres.user,
-        password: config.postgres.password,
-        host: config.postgres.host,
-        port: config.postgres.port,
-        database: config.postgres.db,
+        connectionString: config.postgres.connectionString,
     });
     const client = await pool.connect();
 
