@@ -63,7 +63,7 @@ services:
     env_file:
       - .env
     healthcheck:
-      test: ["CMD", "nc", "-z", "localhost", "8085"]
+      test: ["CMD", "curl", "http://localhost:8085/"]
       interval: 5s
       timeout: 5s
       retries: 5

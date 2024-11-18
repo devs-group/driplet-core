@@ -1,5 +1,7 @@
 # Google credentials
 backend/credentials/*
 
+.idea
+
 # Env files
 .env
