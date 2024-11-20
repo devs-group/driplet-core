@@ -13,10 +13,6 @@ export const config = {
         secret: Deno.env.get("SESSION_SECRET") || "your-secret-key",
     },
     postgres: {
-        user: Deno.env.get("POSTGRES_USER") || "postgres",
-        password: Deno.env.get("POSTGRES_PASSWORD") || "postgres",
-        db: Deno.env.get("POSTGRES_DB") || "postgres",
-        host: Deno.env.get("POSTGRES_HOST") || "database",
-        port: parseInt(Deno.env.get("POSTGRES_PORT") || "5432"),
+        connectionString: Deno.env.get("POSTGRES_CONNECTION_STRING") || "",
     },
 };

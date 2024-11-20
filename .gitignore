@@ -5,3 +5,6 @@ backend/credentials/*
 
 # Env files
 .env
+
+# Terraform files
+.terraform/
