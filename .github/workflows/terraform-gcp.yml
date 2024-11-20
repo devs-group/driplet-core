@@ -3,12 +3,12 @@ name: Terraform GCP Deployment
 on:
   push:
     branches: [ feat/terraform-setup-init ]
-    paths:
-      - 'infra/envs/dev/**'
+    # paths:
+    #   - 'infra/envs/dev/**'
   pull_request:
     branches: [ feat/terraform-setup-init ]
-    paths:
-      - 'infra/envs/dev/**'
+    # paths:
+    #   - 'infra/envs/dev/**'
 
 env:
   TF_WORKSPACE: dev
