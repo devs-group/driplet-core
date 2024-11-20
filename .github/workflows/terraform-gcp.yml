@@ -46,11 +46,11 @@ jobs:
       
     - name: Terraform Plan
       working-directory: ${{ env.WORKING_DIRECTORY }}
-      if: github.event_name == 'pull_request'
+      # if: github.event_name == 'pull_request'
       run: terraform plan -no-color
       continue-on-error: true
       
     - name: Terraform Apply
       working-directory: ${{ env.WORKING_DIRECTORY }}
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      # if: github.ref == 'refs/heads/main' && github.event_name == 'push'
       run: terraform apply -auto-approve
