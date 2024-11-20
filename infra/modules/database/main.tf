@@ -1,3 +1,4 @@
+# SQL Database Instance
 resource "google_sql_database_instance" "driplet_application_db" {
   database_version = "POSTGRES_17"
   region           = var.region
@@ -12,6 +13,7 @@ resource "google_sql_database_instance" "driplet_application_db" {
   }
 }
 
+# Random password for the SQL user
 resource "random_password" "driplet_application_db_password" {
   length    = 64
   special   = false
@@ -19,13 +21,9 @@ resource "random_password" "driplet_application_db_password" {
   min_lower = 5
 }
 
+# SQL User
 resource "google_sql_user" "driplet_application_db_user" {
   name     = "driplet_application_user"
   password = random_password.driplet_application_db_password.result
   instance = google_sql_database_instance.driplet_application_db.name
-}
-
-output "driplet-application-db-password" {
-  value     = random_password.driplet_application_db_password.result
-  sensitive = true
 }

@@ -1,5 +1,8 @@
 terraform {
   required_providers {
+    google-beta = {
+      source = "hashicorp/google-beta"
+    }
     google = {
       source  = "hashicorp/google"
       version = "6.9.0"
@@ -9,9 +12,4 @@ terraform {
       version = "3.6.3"
     }
   }
-}
-
-provider "google" {
-  project = var.project_id
-  region  = var.region
 }

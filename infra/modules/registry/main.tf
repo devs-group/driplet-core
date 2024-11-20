@@ -1,16 +1,19 @@
-resource "google_artifact_registry_repository" "driplet-registry" {
+# Artifact Registry Repository
+resource "google_artifact_registry_repository" "driplet_registry" {
   location      = var.region
   project       = var.project_id
   repository_id = "driplet-repository"
   description   = "Driplet Repository"
   format        = "DOCKER"
+
   cleanup_policies {
     id     = "delete_old_images"
     action = "DELETE"
     condition {
-      older_than = "432000s"
+      older_than = "432000s" # 5 days
     }
   }
+
   cleanup_policies {
     id     = "keep_last_2_versions"
     action = "KEEP"
