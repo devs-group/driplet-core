@@ -26,7 +26,7 @@ export async function POST_collect(
     return;
   }
 
-  if (!req.user?.id) {
+  if (!req.user?.userId) {
     res.status(STATUS_CODE.Unauthorized).send({ 
       message: "User must be authenticated" 
     });
