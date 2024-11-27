@@ -2,7 +2,7 @@ import { express,  STATUS_CODE } from "../deps.ts";
 
 
 export function GET_getUser(req: express.Request, res: express.Response) {
-    if (req.user?.id) {
+    if (req.user?.user_id) {
         res.status(STATUS_CODE.OK).send({
             "user": req.user,
         })
@@ -13,7 +13,7 @@ export function GET_getUser(req: express.Request, res: express.Response) {
     }
 }
 export function GET_getTest(req: express.Request, res: express.Response) {
-    if (req.user?.userId) {
+    if (req.user?.user_id) {
         res.status(STATUS_CODE.OK).send({
             "user": req.user,
         })

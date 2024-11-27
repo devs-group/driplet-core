@@ -37,7 +37,7 @@ export async function authMiddleware(req: express.Request, res: express.Response
 
       // Attach token info or user info to the context state for use in handlers
       req.user = {
-        userId: tokenInfo.user_id,
+        user_id: tokenInfo.user_id,
         email: tokenInfo.email,
       };
 
