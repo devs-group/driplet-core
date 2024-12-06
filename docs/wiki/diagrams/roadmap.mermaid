@@ -1,0 +1,32 @@
+gantt
+  title Roadmap
+  dateFormat YYYY-MM-DD
+  %% excludes weekends %%
+  tickInterval 1week
+
+  section Development
+  Client Plugin : client, 2024-11-01, 2w
+  Ingest data : ingest, after client, 2w
+  Process audiences : process, 2024-12-01, 2w
+  Publish audiences : publish, 2024-11-04, 2w
+  Point to crypto tokens : points, 2024-11-04, 2w
+
+  section Alpha
+  Invite users and start the community : invite, 2024-11-01, 2w
+  Analyse user behavior : analyse, 2024-11-01, 2w
+  Finalize MVP : data, 2024-11-04, 2w
+  ~500 Users : crit, milestone, 500users, after data, 0d
+
+  section Beta
+  Publish audiences to data exchange : data_exchange, 2024-11-01, 2w
+  Grow community : grow, 2024-11-01, 2w
+  Hardening: hardening, 2024-11-01, 2w
+  $100 / month : crit, milestone, 100dollar, 2024-11-01, 0d
+  ~1000 Users : crit, milestone, 1000users, after hardening, 0d
+
+  section Launch
+  Promotions to community : promotions, 2024-11-01, 2w
+  Build unique audiences : unique_audiences, 2024-11-01, 2w
+  Connect more data exchanges : more_data_exchanges, 2024-11-01, 2w
+  Prepare for token distribution : token_distribution, 2024-11-01, 2w
+  Go Live : crit, milestone, golive, 2024-12-01, 0d
