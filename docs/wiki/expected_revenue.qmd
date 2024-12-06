@@ -3,6 +3,8 @@ title: Thoughts on expected revenue of Driplet
 author: Driplet Team
 format:
   revealjs:
+    width: 1600
+    height: 900
     mermaid:
       theme: neutral
 html-math-method: katex
