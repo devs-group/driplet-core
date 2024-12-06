@@ -45,19 +45,16 @@ export async function POST_collect(
       message: "Event collected successfully",
       messageId,
     });
-  } catch (error) {
+    return;
+  } catch (err) {
     l.error('Failed to publish message:', {
-      error: error.message,
+      error: err,
       event: messageData,
     });
     res.status(STATUS_CODE.InternalServerError).send({
       message: "Error publishing message",
+      error: err.message
     });
     return;
   }
-
-  res.status(STATUS_CODE.InternalServerError).send({ 
-    message: "Failed to collect event",
-    error: error.message,
-  });
 }
