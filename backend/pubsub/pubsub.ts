@@ -5,7 +5,7 @@ import { l } from "../logger.ts";
 
 export interface EventMessage {
   event: Record<string, unknown>;
-  user_id: string;
+  user: Express.User;
   timestamp: string;
 }
 
@@ -14,8 +14,8 @@ let cachedTopic: Topic | null = null;
 const MAX_RETRIES = 3;
 const RETRY_DELAY = 1000;
 
-const delay = (ms: number): Promise<void> => 
-  new Promise(resolve => setTimeout(resolve, ms));
+const delay = (ms: number): Promise<void> =>
+  new Promise((resolve) => setTimeout(resolve, ms));
 
 async function ensureTopicExists(attempt = 1): Promise<Topic> {
   try {
@@ -26,7 +26,7 @@ async function ensureTopicExists(attempt = 1): Promise<Topic> {
 
     const topicName = config.google.pubsubTopicClientEvents;
     const [exists] = await pubsub.topic(topicName).exists();
-    
+
     if (exists) {
       cachedTopic = pubsub.topic(topicName);
       l.info(`Topic ${topicName} already exists`);
@@ -38,26 +38,34 @@ async function ensureTopicExists(attempt = 1): Promise<Topic> {
     return cachedTopic;
   } catch (error) {
     if (attempt < MAX_RETRIES) {
-      l.warn(`Failed to ensure topic exists (attempt ${attempt}/${MAX_RETRIES}): ${error.message}`);
+      l.warn(
+        `Failed to ensure topic exists (attempt ${attempt}/${MAX_RETRIES}): ${error.message}`,
+      );
       await delay(RETRY_DELAY * attempt);
       return ensureTopicExists(attempt + 1);
     }
-    throw new Error(`Failed to ensure topic exists after ${MAX_RETRIES} attempts: ${error.message}`);
+    throw new Error(
+      `Failed to ensure topic exists after ${MAX_RETRIES} attempts: ${error.message}`,
+    );
   }
 }
 
-export async function publishMessage(messageData: EventMessage): Promise<string> {
+export async function publishMessage(
+  messageData: EventMessage,
+): Promise<string> {
   const topic = await ensureTopicExists();
   const messageBuffer = Buffer.from(JSON.stringify(messageData));
-  
+
   const messageId = await topic.publishMessage({
     data: messageBuffer,
     attributes: {
       timestamp: messageData.timestamp,
-      user_id: messageData.user_id,
+      user_id: messageData.user.user_id,
     },
   });
 
-  l.info(`Published message ${messageId} to topic ${config.google.pubsubTopicClientEvents}`);
+  l.info(
+    `Published message ${messageId} to topic ${config.google.pubsubTopicClientEvents}`,
+  );
   return messageId;
 }
