@@ -1,7 +1,7 @@
 # Google credentials
 backend/credentials/*
-
-.idea
+node_modules
+launch.json
 
 # Env files
 .env
