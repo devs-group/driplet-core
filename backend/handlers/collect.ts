@@ -41,10 +41,10 @@ export async function POST_collect(
     });
     res.status(STATUS_CODE.InternalServerError).send({
       message: "Error publishing message",
+      error: err.message
     });
     return;
   }
-
   res.status(STATUS_CODE.InternalServerError).send({
     message: "Failed to collect event",
   });
