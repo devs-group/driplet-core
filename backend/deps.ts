@@ -19,14 +19,14 @@ import bodyParser from "npm:body-parser@1.20.2";
 import pgSession from "npm:connect-pg-simple";
 
 export {
-    bodyParser,
-    express,
-    expressSession,
-    GoogleStrategy,
-    npgm,
-    passport,
-    pg,
-    pgSession,
-    pino,
-    STATUS_CODE,
+  bodyParser,
+  express,
+  expressSession,
+  GoogleStrategy,
+  npgm,
+  passport,
+  pg,
+  pgSession,
+  pino,
+  STATUS_CODE,
 };

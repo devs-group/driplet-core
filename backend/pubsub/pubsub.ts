@@ -5,7 +5,7 @@ import { l } from "../logger.ts";
 
 export interface EventMessage {
   event: Record<string, unknown>;
-  user: Express.User;
+  user: Express.User | undefined;
   timestamp: string;
 }
 

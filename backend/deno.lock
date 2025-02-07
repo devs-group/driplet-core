@@ -19,6 +19,7 @@
     "npm:drizzle-orm@*": "0.36.0_postgres@3.4.5",
     "npm:express-session@1.18.1": "1.18.1",
     "npm:express@4.18.2": "4.18.2",
+    "npm:neverthrow@*": "8.1.1",
     "npm:node-pg-migrate@*": "7.7.1_pg@8.13.1",
     "npm:passport-google-oauth20@2.0.0": "2.0.0",
     "npm:passport@0.7.0": "0.7.0",
@@ -285,6 +286,9 @@
     },
     "@protobufjs/utf8@1.1.0": {
       "integrity": "sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw=="
+    },
+    "@rollup/rollup-linux-x64-gnu@4.30.1": {
+      "integrity": "sha512-UtgGb7QGgXDIO+tqqJ5oZRGHsDLO8SlpE4MhqpY9Llpzi5rJMvrK6ZGhsRCST2abZdBqIBeXW6WPD5fGK5SDwg=="
     },
     "@tootallnate/once@2.0.0": {
       "integrity": "sha512-XCuKFP5PS55gnMVu3dty8KPatLqUoy/ZYzDzAGCQ8JNFCkLXzmI7vNHCR+XpbZaMWQK/vQubr7PkYq8g470J/A=="
@@ -1098,6 +1102,12 @@
     },
     "negotiator@0.6.3": {
       "integrity": "sha512-+EUsqGPLsM+j/zdChZjsnX51g4XrHFOIXwfnCVPGlQk/k5giakcKsuxCObBRu6DSm9opw/O6slWbJdghQM4bBg=="
+    },
+    "neverthrow@8.1.1": {
+      "integrity": "sha512-DpbZ/UDI0B+TxJB1JysXSfi1++3YK2xLBqQLTlRN0b4zxlZ2MoiB+dKKV8dMRzt1fAFjRKDknXOVJgpl+a4Amw==",
+      "dependencies": [
+        "@rollup/rollup-linux-x64-gnu"
+      ]
     },
     "node-fetch@2.7.0": {
       "integrity": "sha512-c4FRfUm/dbcWZ7U+1Wq0AwCyFL+3nt2bEw05wfxSz+DWpWsitgmSgYmy2dQdWyKC1694ELPqMs/YzUSNozLt8A==",

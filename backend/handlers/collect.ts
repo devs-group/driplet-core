@@ -14,19 +14,13 @@ export async function POST_collect(
     });
     return;
   }
-
-  if (!req.user) {
-    res.status(STATUS_CODE.Unauthorized).send({
-      message: "User must be authenticated",
-    });
-    return;
-  }
-
   const messageData: EventMessage = {
     event,
     user: req.user,
     timestamp: new Date().toISOString(),
   };
+
+  l.info(messageData);
 
   try {
     const messageId = await publishMessage(messageData);
@@ -41,7 +35,6 @@ export async function POST_collect(
     });
     res.status(STATUS_CODE.InternalServerError).send({
       message: "Error publishing message",
-      error: err.message
     });
     return;
   }

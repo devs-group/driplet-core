@@ -1,91 +1,94 @@
 import { pg } from "../deps.ts";
-import { l } from "../logger.ts";
 import { config } from "../config.ts";
+import { err, ok, Result } from "npm:neverthrow";
 
 export interface User {
-    id: string;
-    email: string;
-    oauthId: string;
+  id: string;
+  email: string;
+  oauthId: string;
+  credits: string;
 }
 
 export interface Queries {
-    getUserByID: (id: string) => Promise<User | null>;
-    getUserByOAuthIdAndEmail: (
-        oauthId: string,
-        email: string,
-    ) => Promise<User | null>;
-    saveUser: (email: string, oauthId: string) => Promise<User | null>;
-    getPool: () => pg.Pool;
+  saveUser: (
+    email: string,
+    oauthId: string,
+  ) => Promise<Result<User | null, Error>>;
+  updateUserCredits: (
+    email: string,
+    credits: number,
+  ) => Promise<Result<User | null, Error>>;
+  getPool(): pg.Pool;
+  getUserByEmail(
+    email: string,
+  ): Promise<Result<User | null, Error>>;
 }
 
 export async function DB(): Promise<Queries> {
-    const { Pool } = pg;
-    const pool = new Pool({
-        user: config.postgres.user,
-        password: config.postgres.password,
-        host: config.postgres.host,
-        port: config.postgres.port,
-        database: config.postgres.db,
-    });
-    const client = await pool.connect();
+  const { Pool } = pg;
+  const pool = new Pool({
+    user: config.postgres.user,
+    password: config.postgres.password,
+    host: config.postgres.host,
+    port: config.postgres.port,
+    database: config.postgres.db,
+  });
+  const client = await pool.connect();
 
-    function getPool() {
-        return pool;
-    }
+  function getPool(): pg.Pool {
+    return pool;
+  }
 
-    async function getUserByID(id: string): Promise<User | null> {
-        try {
-            const { rows } = await client.query<User>(
-                `SELECT * FROM users WHERE id = $1 LIMIT 1`,
-                [id],
-            );
-            return rows[0];
-        } catch (err) {
-            l.error(`unable to query user by id: ${id}: ${err}`);
-            throw err;
-        }
-    }
+  async function getUserByEmail(
+    email: string,
+  ): Promise<Result<User | null, Error>> {
+    return await client
+      .query<User>(`SELECT * FROM users WHERE email = $1 LIMIT 1`, [email])
+      .then((result) => ok(result.rows[0] || null))
+      .catch((error) =>
+        err(new Error(`Failed to get user by email: ${error.message}`))
+      );
+  }
 
-    async function getUserByOAuthIdAndEmail(
-        oauthId: string,
-        email: string,
-    ): Promise<User | null> {
-        try {
-            const { rows } = await client.query<User>(
-                `SELECT * FROM users WHERE oauth_id = $1 AND email = $2 LIMIT 1`,
-                [oauthId, email],
-            );
-            return rows[0];
-        } catch (err) {
-            l.error(
-                `unable to query user by oauth_id: ${oauthId} and email: ${email}: ${err}`,
-            );
-            throw err;
-        }
-    }
+  async function saveUser(
+    email: string,
+    oauthId: string,
+  ): Promise<Result<User | null, Error>> {
+    return await client
+      .query<User>(
+        `INSERT INTO users (email, oauth_id)
+         VALUES ($1, $2)
+         ON CONFLICT (email) DO NOTHING
+         RETURNING *`,
+        [email, oauthId],
+      )
+      .then((result) => ok(result.rows[0] || null))
+      .catch((error) =>
+        err(new Error(`Failed to save user: ${error.message}`))
+      );
+  }
 
-    async function saveUser(
-        email: string,
-        oauthId: string,
-    ): Promise<User | null> {
-        try {
-            const { rows } = await client.query<User>(
-                `INSERT INTO users (email, oauth_id) VALUES ($1, $2) RETURNING *`,
-                [email, oauthId],
-            );
-            return rows[0];
-        } catch (err) {
-            l.error(
-                `unable to insert user with: ${oauthId} and email: ${email}: ${err}`,
-            );
-            throw err;
-        }
-    }
+  async function updateUserCredits(
+    email: string,
+    credits: number,
+  ): Promise<Result<User | null, Error>> {
+    return await client
+      .query<User>(
+        `UPDATE users SET credits = $1 WHERE email = $2 RETURNING *`,
+        [credits.toString(), email],
+      )
+      .then((result) => ok(result.rows[0] || null))
+      .catch((error) =>
+        err(
+          new Error(`Failed to update user credits: ${error.message}`),
+        )
+      );
+  }
 
-    return {
-        getUserByID,
-        getUserByOAuthIdAndEmail,
-        saveUser,
-        getPool,
-    };
+  return {
+    getUserByEmail,
+    saveUser,
+    updateUserCredits,
+    getPool,
+  };
 }
