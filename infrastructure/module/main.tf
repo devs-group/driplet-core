@@ -2,6 +2,16 @@
 # Enable Required Google Cloud APIs
 # -----------------------------------------------------------
 
+resource "google_project_service" "cloud_scheduler" {
+  project            = var.project_id
+  service            = "cloudscheduler.googleapis.com"
+  disable_on_destroy = false
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
 resource "google_project_service" "cloud_run" {
   project            = var.project_id
   service            = "run.googleapis.com"
@@ -407,51 +417,39 @@ resource "google_sql_user" "driplet_application_db_user" {
 # -----------------------------------------------------------
 # Compute / Cloud Run Resources
 # -----------------------------------------------------------
-
 resource "google_cloud_run_v2_service" "driplet_service" {
   name                = "driplet-service"
   location            = var.region
   ingress             = "INGRESS_TRAFFIC_INTERNAL_LOAD_BALANCER"
   deletion_protection = false
+
   template {
     containers {
       image = var.driplet_image
+
+      # Add startup script to run migrations then start the app
+      command = ["/bin/sh"]
+      args    = ["-c", "echo 'Starting database migrations...' && ./api migrate up && echo 'Migrations completed successfully' && echo 'Starting application...' && ./api run"]
+
       ports {
-        container_port = 1991
+        container_port = 9000
       }
+
       volume_mounts {
         name       = "cloudsql"
         mount_path = "/cloudsql"
       }
+
       env {
-        name  = "POSTGRES_CONNECTION_STRING"
-        value = "postgresql://${var.database_user}:${random_password.driplet_application_db_password.result}@/postgres?host=/cloudsql/${google_sql_database_instance.driplet_application_db.connection_name}"
+        name  = "ENV"
+        value = "development"
       }
-      env {
-        name  = "GOOGLE_PUBSUB_TOPIC_CLIENT_EVENTS"
-        value = "client-events"
-      }
-      env {
-        name  = "GOOGLE_PROJECT_ID"
-        value = var.project_id
-      }
-      env {
-        name  = "GOOGLE_CALLBACK_URL"
-        value = var.oauth_run_callback_url
-      }
+
       env {
         name  = "PUBSUB_PROJECT_ID"
-        value = var.project_id
+        value = "driplet-core-sandbox"
       }
-      env {
-        name = "SESSION_SECRET"
-        value_source {
-          secret_key_ref {
-            secret  = google_secret_manager_secret.session_secret.secret_id
-            version = "latest"
-          }
-        }
-      }
+
       env {
         name = "GOOGLE_CLIENT_ID"
         value_source {
@@ -461,23 +459,95 @@ resource "google_cloud_run_v2_service" "driplet_service" {
           }
         }
       }
+
       env {
-        name = "GOOGLE_CLIENT_SECRET"
-        value_source {
-          secret_key_ref {
-            secret  = google_secret_manager_secret.oauth2_client_secret.secret_id
-            version = "latest"
-          }
-        }
+        name  = "DATABASE_URL"
+        value = "postgresql://${var.database_user}:${random_password.driplet_application_db_password.result}@/postgres?host=/cloudsql/${google_sql_database_instance.driplet_application_db.connection_name}"
       }
     }
+
     volumes {
       name = "cloudsql"
       cloud_sql_instance {
         instances = [google_sql_database_instance.driplet_application_db.connection_name]
       }
     }
+
     service_account = google_service_account.driplet_service_account.email
+  }
+}
+
+resource "google_cloud_run_v2_job" "scheduler_job" {
+  name     = "scheduler-points-calculation"
+  location = var.region
+
+  template {
+    template {
+      containers {
+        image = var.driplet_scheduler_image
+
+        command = ["/bin/sh"]
+        args    = ["-c", "./scheduler calc-points"]
+
+        volume_mounts {
+          name       = "cloudsql"
+          mount_path = "/cloudsql"
+        }
+
+        env {
+          name  = "ENV"
+          value = "development"
+        }
+
+        env {
+          name  = "PUBSUB_PROJECT_ID"
+          value = "driplet-core-sandbox"
+        }
+
+        env {
+          name = "GOOGLE_CLIENT_ID"
+          value_source {
+            secret_key_ref {
+              secret  = google_secret_manager_secret.oauth2_client_id.secret_id
+              version = "latest"
+            }
+          }
+        }
+
+        env {
+          name  = "DATABASE_URL"
+          value = "postgresql://${var.database_user}:${random_password.driplet_application_db_password.result}@/postgres?host=/cloudsql/${google_sql_database_instance.driplet_application_db.connection_name}"
+        }
+      }
+
+      volumes {
+        name = "cloudsql"
+        cloud_sql_instance {
+          instances = [google_sql_database_instance.driplet_application_db.connection_name]
+        }
+      }
+
+      service_account = google_service_account.driplet_service_account.email
+    }
+  }
+}
+
+# Cloud Scheduler Job to trigger the Cloud Run Job
+resource "google_cloud_scheduler_job" "daily_job" {
+  depends_on = [google_project_service.cloud_scheduler]
+
+  name        = "trigger-points-calculation"
+  description = "Triggers daily points calculation job"
+  schedule    = "0 0 * * *" # Runs at midnight every day
+  time_zone   = "UTC"
+
+  http_target {
+    http_method = "POST"
+    uri         = "https://${var.region}-run.googleapis.com/apis/run.googleapis.com/v1/namespaces/${var.project_id}/jobs/${google_cloud_run_v2_job.scheduler_job.name}:run"
+
+    oauth_token {
+      service_account_email = google_service_account.driplet_service_account.email
+    }
   }
 }
 

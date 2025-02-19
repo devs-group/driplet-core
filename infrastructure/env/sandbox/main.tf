@@ -20,9 +20,10 @@ module "driplet_core" {
   cloud_run_service_name = var.cloud_run_service_name
 
   # Compute / Cloud Run Variables
-  driplet_image          = var.driplet_image
-  database_user          = var.database_user
-  oauth_run_callback_url = var.oauth_run_callback_url
+  driplet_image           = var.driplet_image
+  driplet_scheduler_image = var.driplet_scheduler_image
+  database_user           = var.database_user
+  oauth_run_callback_url  = var.oauth_run_callback_url
 
   # Environment name (used for resource naming and labels)
   env = var.env

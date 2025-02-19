@@ -69,6 +69,11 @@ variable "driplet_image" {
   type        = string
 }
 
+variable "driplet_scheduler_image" {
+  description = "Container image for the Cloud Run service"
+  type        = string
+}
+
 variable "database_user" {
   description = "Database username for connecting to Cloud SQL"
   type        = string
