@@ -1,0 +1,67 @@
+@startuml
+@enduml
+
+
+@startuml(id=c4init)
+!ENABLE_ALL_PLANT_ELEMENTS = 1
+@enduml
+
+@startuml(id=c4config)
+SHOW_PERSON_OUTLINE()
+
+skinparam {
+  ArrowFontSize 11
+}
+
+
+@enduml
+
+
+@startuml(id=c4context)
+!include common.puml!c4init
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!include common.puml!c4config
+!include common.puml!loader
+@enduml
+
+
+@startuml(id=c4container)
+!include common.puml!c4init
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!include common.puml!c4config
+!include common.puml!loader
+@enduml
+
+
+@startuml(id=c4component)
+!include common.puml!c4init
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+!include common.puml!c4config
+!include common.puml!loader
+@enduml
+
+
+@startuml(id=c4deployment)
+!include common.puml!c4init
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Deployment.puml
+!include common.puml!c4config
+!include common.puml!loader
+@enduml
+
+
+@startuml(id=c4sequence)
+!include common.puml!c4init
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Sequence.puml
+
+SHOW_FOOT_BOXES($show=false)
+SHOW_FOOT_BOXES($show=false)
+SHOW_INDEX($show=false)
+
+!include common.puml!c4config
+!include common.puml!loader
+@enduml
+
+
+@startuml(id=c4done)
+' SHOW_LEGEND()
+@enduml

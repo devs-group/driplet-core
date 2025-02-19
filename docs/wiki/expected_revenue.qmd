@@ -134,6 +134,7 @@ df = pd.DataFrame(data={
   '# of users': [0, 1000, 10000, 50000, 100000, 250000, 400000, 500000],
   'value of audience': [10, 10, 10, 10, 10, 10, 10, 10],
   'costs of operations': [1000, 1000, 1500, 2000, 3000, 4000, 5000, 5500],
+  'costs of development': [1000, 1000, 1500, 2000, 3000, 4000, 5000, 5500],
   'costs of token distribution': [0, 0, 0, 0, 1000, 2000, 3000, 4000]
 })
 df.index = df['time']
@@ -141,6 +142,27 @@ df.index.name = 'time'
 
 display(HTML(df.to_html(index=False)))
 ```
+
+
+## Revenue Projection (Reduced) {.smaller}
+
+```{python}
+from IPython.display import display, HTML
+import pandas as pd
+# import plotly.express as px
+
+df2 = pd.DataFrame(data={
+  'time': ['Q1-25', 'Q2-25', 'Q3-25', 'Q4-25', 'Q1-26', 'Q2-26', 'Q3-26', 'Q4-26'],
+  'revenue': [0, 400, 800, 1200, 100000, 1000000, 5000000, 5000000],
+  'costs (ops, token dist., development)': [1000, 1000, 1500, 2000, 3000, 4000, 5000, 5500],
+  'earnings': [0, 400, 800, 1200, 100000, 1000000, 5000000, 5000000]
+})
+df2.index = df2['time']
+df2.index.name = 'time'
+
+display(HTML(df2.to_html(index=False)))
+```
+
 
 
 ## Revenue Projection Diagram

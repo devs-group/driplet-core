@@ -1,0 +1,20 @@
+@startuml
+
+!include common.puml!c4component
+
+Person(user, "User", "User...")
+
+Container(browser_plugin, "Browser Plugin", "Browser", "asdf")
+
+Boundary(frontend, "Driplet Portal") {
+  Component(portal_server, "Portal", "Docker, Angular", "...")
+  Component(idp, "IDP", "keycload", "...")
+}
+
+Rel(user, browser_plugin, "provides data to", "")
+Rel(browser_plugin, portal_server, "sends data to", "https, json")
+
+
+!include common.puml!c4done
+
+@enduml

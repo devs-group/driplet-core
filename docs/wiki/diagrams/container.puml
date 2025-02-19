@@ -1,0 +1,15 @@
+@startuml
+
+!include common.puml!c4container
+
+Person(user, "User", "User...")
+
+System_Boundary(driplet, "Driplet") {
+  Container(browser_plugin, "Browser Plugin", "Browser", "asdf")
+  Container(portal, "Portal", "Portal...", "")
+}
+
+
+!include common.puml!c4done
+
+@enduml
